@@ -1,0 +1,192 @@
+# ---
+# gather_project_info_task:
+#   description: Use the Recursive Directory Scanner tool and pass the path {project_directory}
+#     as the argument 'directory'. This will allow you to scan the full structure of the project.
+#     It is necessary to recursively go through all folders and files of the project, including the source code,
+#     configuration files, documentation and other relevant materials.
+
+#     Your task is to collect as much information as possible, which will further help you form
+#     full-fledged README.md the file. Pay attention to
+#     - The purpose of the project;
+#     - Technologies and libraries used;
+#     - Directory structure;
+#     - Startup and installation instructions (if available);
+#     - API and licenses (if applicable);
+#     - Other useful information for documentation.
+
+#   expected_output: A structured overview of the project, the main goal is to collect as much information as possible that will help in the future.
+#     form a meaningful README.md for the project
+#   async_execution: false
+#   agent: project_info_gatherer
+
+# read_file_contents_task:
+#   description: For each file identified in the project directory, read its contents
+#     to extract necessary information for the README.md. This includes installation
+#     instructions, use cases, and any other relevant details.
+#    "In the analysis process, focus on the following aspects:"
+#      "The purpose of the project:" determine what the project does, what tasks it solves.
+#     "- Installation and launch:" collect instructions on how to install dependencies, launch the project, environment, etc.
+#     "- Project architecture:" if possible, describe the main components and how they interact.
+#     "- Use:" how should the user use the project? Are there any examples of launches or tests?
+#     "- API:" if the project provides an API, fix its structure, available endpoints, input and output parameters.
+#     "- License:" find and define the terms of the license.
+#     - Any other useful information for documentation.
+
+#     All information collected should be structured and presented as follows,
+#     so that it can be easily used when composing README.md .
+
+#   expected_output: Contents of the files that will be used to populate the README.md
+#     sections, including installation instructions and use cases.
+#   async_execution: false
+#   agent: file_content_reader
+#   context:
+#   - gather_project_info_task
+  
+# generate_readme_task:
+#   description: README.md containing the following sections
+#     An introduction with a brief description of the project and its purpose.
+#     Installation and configuration instructions, including dependencies and commands.
+#     Use cases demonstrating key features of the project.
+#     API documentation section (if applicable).
+#     Information about the license and authors the project.
+#     README.md It should be written in Markdown format, easy to read, 
+#     contain code examples and correspond to the current state of the project.
+#     if it is missing, create a file with dependencies.
+#   expected_output: A well-structured README.md file on Russian language, that adheres to best practices
+#     and includes all necessary sections based on the gathered project information.
+#   async_execution: false
+#   agent: readme_generator
+#   context:
+#   - read_file_contents_task
+
+
+# # analyze_project_task:
+# #   description: >
+# #     Analyze the project's directory structure using DirectoryReadTool to determine its stack, 
+# #     dependencies, and key files.
+# #   expected_output: >
+# #     list of all files
+# #   agent: documenter
+# #   output_file: output/list_files.txt
+
+
+# # documenter_task:
+# #   description: >
+# #     Creating a detailed and structured README.md 
+# #     for a GitHub project that provides a clear understanding 
+# #     of the functionality, installation, and usage.
+# #   expected_output: >
+# #     README.md containing the following sections:
+# #     An introduction with a brief description of the project and its purpose.
+# #     Installation and configuration instructions, including dependencies and commands.
+# #     Use cases demonstrating key features of the project.
+# #     API documentation section (if applicable).
+# #     Information about the license and authors the project.
+# #     README.md It should be written in Markdown format, easy to read, 
+# #     contain code examples and correspond to the current state of the project.
+# #   context: [analyze_project_task]
+# #   agent: documenter
+# #   input_file: list_files.txt  # ✅ Добавляем источник данных!
+
+
+
+# # analyze_project_task:
+# #   description: >
+# #     Analyze the project's directory structure using DirectoryReadTool to determine its stack, 
+# #     dependencies, and key files.
+# #     Use FileReadTool to extract relevant information from important files 
+# #     (e.g., requirements.txt, package.json, pyproject.toml, main code files).
+# #     Summarize the findings in a structured format.
+# #   expected_output: >
+# #     A structured summary of the project, including:
+# #     - Programming language and framework used.
+# #     - List of dependencies.
+# #     - Key files and their purpose.
+# #   agent: documenter
+# #   output_file: output/project_summary.txt
+
+
+gather_project_info_task:
+  description: >
+    Use the RecursiveDirectoryScanner tool and pass the path {project_directory}
+    as the 'directory' argument. It should recursively scan all folders and files
+    in the project, including source code, configuration files, documentation,
+    and any other relevant materials.
+
+    The goal is to collect as much information as possible about the project,
+    which will be used later to generate a complete README.md.
+
+    Pay attention to
+    - The purpose of the project;
+    - Technologies and libraries used;
+    - Directory structure;
+    - Installation and startup instructions (if available);
+    - API and licenses (if applicable);
+    - Any other useful information for documentation.
+
+  expected_output: >
+    A structured overview of the project containing essential details needed
+    to generate the README.md.
+
+  output_file: output/project_info.json
+  async_execution: false
+  agent: project_info_gatherer
+
+read_file_contents_task:
+  description: >
+    For each file found in the project structure (from project_info.json), 
+    read its content using the FileReadTool. Extract useful information needed 
+    for generating the README.md.
+
+    Focus on the following aspects:
+    - Project purpose: what the project does and what problems it solves;
+    - Installation and startup: instructions for installing dependencies, running the project, environment variables;
+    - Project architecture: main components and how they interact;
+    - Usage: how should the user work with the project? Are there examples of running or testing it?
+    - API: if the project provides an API, describe its structure, available endpoints, inputs and outputs;
+    - License: find and define the license terms;
+    - Any other information useful for documentation.
+
+    All collected information should be well-structured and ready to be used when composing the README.md.
+
+  expected_output: >
+    Structured data extracted from the project files, including installation instructions, 
+    architecture overview, API description, usage examples, and license information.
+
+  input_file: output/project_info.json
+  output_file: output/readme_data.json
+  async_execution: false
+  agent: file_content_reader
+
+generate_readme_task:
+  description: >
+    Generate a detailed README.md file in Russian based on the structured data in readme_data.json.
+    The README should follow this structure
+
+    1. Introduction — brief overview of the project, its goals and domain.
+    2. Features — key capabilities and functions.
+    3. Technologies and Libraries:
+       - Core frameworks and architecture
+       - Installed libraries (from requirements.txt, pyproject.toml, etc.)
+    4. Project Architecture — key files and their responsibilities.
+    5. Installation and Running
+       - Dependency installation steps
+       - Local launch and Docker instructions (if Dockerfile/docker-compose.yml present)
+       - Required environment variables
+    6. How It Works — explain the internal processing, how the system handles requests.
+    7. Additional Info — topic/domain specialization (if any)
+    8. License — extract from LICENSE file or default to MIT if not found.
+
+    The README must be
+    - Written in Markdown
+    - Easy to read
+    - Include code examples if found
+    - Up to date with the current state of the project
+
+  expected_output: >
+    A ready-to-publish README.md file that accurately reflects the project, formatted according to best practices.
+
+  input_file: output/readme_data.json
+  output_file: output/README.md
+  async_execution: false
+  agent: readme_generator
