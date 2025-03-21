@@ -1,3 +1,6 @@
+
+![image](https://github.com/user-attachments/assets/fa937135-1a2d-4717-afc5-03f46a244499)
+
 # Генератор README.md с использованием CrewAI
 ( Этот README.md создан при помощи этого агента)
 
