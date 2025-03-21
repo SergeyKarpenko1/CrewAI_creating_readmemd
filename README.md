@@ -1,5 +1,6 @@
 
-![resized_pixel_art_1560x400](https://github.com/user-attachments/assets/f6cc9a20-f286-453c-aaea-833026a0ca26)
+
+![resized_pixel_art_3120x800](https://github.com/user-attachments/assets/31712e2d-f7bb-46f2-847f-c46e49a7fe6b)
 
 
 # Генератор README.md с использованием CrewAI
