@@ -87,7 +87,7 @@
 ### Шаги установки
 1. Клонируйте репозиторий:
    ```bash
-   git clone [<url-репозитория>](https://github.com/SergeyKarpenko1/CrewAI_creating_readmemd)
+   git clone https://github.com/SergeyKarpenko1/CrewAI_creating_readmemd
    cd Сreating_readmeMD
    ```
 
