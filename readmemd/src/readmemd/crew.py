@@ -13,8 +13,6 @@ load_dotenv()
 import warnings
 warnings.filterwarnings('ignore')
 
-# scan_tool = RecursiveDirectoryScanner(directory='project_directory')
-# file_tool = FileReadTool()
 
 @CrewBase
 class Readmemd():
@@ -29,15 +27,7 @@ class Readmemd():
         self.llm = ChatOpenAI(
             model="openrouter/anthropic/claude-3.7-sonnet",
             openai_api_base="https://openrouter.ai/api/v1",
-            openai_api_key=os.getenv("OPENROUTER_API_KEY"),
-
-        # self.llm = litellm.LLM(
-        #     model="google/gemini-flash-1.5",  # Убираем "openrouter/" в названии модели
-        #     api_base="https://openrouter.ai/api/v1",
-        #     api_key=os.getenv("OPENROUTER_API_KEY"),
-        )
-        
-
+            openai_api_key=os.getenv("OPENROUTER_API_KEY"))
             
     @agent
     def project_info_gatherer(self) -> Agent:
@@ -101,12 +91,12 @@ class Readmemd():
         )
     def run(self):
         """Запуск CrewAI"""
-        print(f"Запуск CrewAI для директории: {self.project_directory}")
+        print(f"Launching CrewAI for a directory: {self.project_directory}")
         self.crew().kickoff(inputs={"project_directory": self.project_directory})
 
 # Запуск с аргументом директории
 if __name__ == "__main__":
-    project_dir = "/Users/sergey/Desktop/CrewAI/Сreating_readmeMD"  # Укажите путь к вашему проекту
+    project_dir = "/Users/sergey/Desktop/CrewAI/Сreating_readmeMD"  # Specify the path to your project
     readme_crew = Readmemd(project_directory=project_dir)
     readme_crew.run()
     
