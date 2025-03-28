@@ -1,207 +1,409 @@
-# Генератор README.md с использованием CrewAI
+# ReadmeMD 🚀
 
-## Введение
+![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
+![CrewAI](https://img.shields.io/badge/CrewAI-0.108.0-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-Данный проект представляет собой инструмент для автоматического создания файлов README.md для программных проектов. Используя фреймворк CrewAI и технологии искусственного интеллекта, инструмент анализирует структуру проекта, содержимое файлов и генерирует подробную документацию в формате Markdown. Это позволяет разработчикам сэкономить время на создании качественной документации, одновременно обеспечивая полноту и структурированность информации о проекте.
+Automated README.md generator powered by AI agents using CrewAI framework.
 
-## Возможности
+**[English](#english) | [Русский](#russian)**
 
-- **Автоматический анализ структуры проекта** — рекурсивное сканирование директорий и файлов
-- **Извлечение ключевой информации** — определение технологий, зависимостей и архитектуры проекта
-- **Интеллектуальная генерация содержимого** — создание согласованного и информативного README.md
-- **Настраиваемые шаблоны** — возможность адаптации под предпочтения пользователя
-- **Поддержка различных форматов проектов** — работа с Python, JavaScript и другими типами проектов
-- **Многоагентная архитектура** — использование специализированных AI-агентов для различных задач
+<a name="english"></a>
 
-## Технологии и библиотеки
+## Table of Contents
 
-### Основные компоненты и архитектура
-- **Python** (>=3.10, <3.13) — основной язык программирования
-- **CrewAI** (v0.108.0) — фреймворк для создания рабочих процессов с AI-агентами
-- **YAML** — формат для конфигурации агентов и задач
-- **JSON** — для хранения и передачи структурированных данных
-- **Markdown** — формат итогового README-файла
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies and Libraries](#technologies-and-libraries)
+- [Project Architecture](#project-architecture)
+- [Installation and Running](#installation-and-running)
+- [How It Works](#how-it-works)
+- [Additional Information](#additional-information)
+- [License](#license)
 
-### Используемые библиотеки
-- **CrewAI Tools** (v0.38.1) — инструменты для агентов CrewAI
-- **Langchain OpenAI** (v0.3.9) — интеграция с языковыми моделями
-- **Pydantic** (v2.10.6) — валидация данных
-- **Python-dotenv** (v1.0.1) — управление переменными окружения
-- **OpenRouter API** — для доступа к AI-моделям (Claude-3.7-Sonnet и Gemini Flash 1.5)
+## Introduction
 
-## Архитектура проекта
+ReadmeMD is a Python application that uses the CrewAI framework to automatically generate comprehensive README.md files for projects. It analyzes project structures, source code, and configuration files to create well-structured documentation.
 
-Проект организован как Python-пакет `readmemd` со следующей структурой:
+This tool solves the tedious and often overlooked task of creating detailed documentation for software projects, ensuring consistent and comprehensive README files that follow best practices.
 
+## Features
+
+- 📁 **Recursive project structure scanning** - Automatically analyzes your entire project directory
+- 📝 **Intelligent file content analysis** - Extracts relevant information from source code and config files
+- 🤖 **Multi-agent AI system** - Uses specialized agents via CrewAI framework for different documentation tasks
+- 📊 **Comprehensive README generation** - Creates standardized documentation with all essential sections
+- 🌐 **Multilingual support** - Generates documentation in both English and Russian
+- ⚙️ **Configurable through YAML files** - Easily customize agents and tasks to your needs
+
+## Technologies and Libraries
+
+### Core Framework and Architecture
+- **Python** (>=3.10,<3.13)
+- **CrewAI** - Framework for orchestrating AI agents
+- **LangChain** - For AI model integration
+
+### AI Models
+- Anthropic Claude 3.7 Sonnet (via OpenRouter)
+- Google Gemini Flash 1.5 (for testing)
+
+### Dependencies
 ```
-/readmemd/
-├── .gitignore               # Файл игнорирования Git
-├── pyproject.toml           # Конфигурация Python-проекта
-├── knowledge/               # Директория базы знаний
-│   └── user_preference.txt  # Пользовательские предпочтения
-└── src/                     # Исходный код
-    └── readmemd/            # Основной пакет
-        ├── __init__.py      # Инициализация пакета
-        ├── crew.py          # Реализация CrewAI (основная логика)
-        ├── main.py          # Точка входа в приложение
-        ├── config/          # Директория конфигурации
-        │   ├── agents.yaml  # Конфигурации агентов
-        │   └── tasks.yaml   # Определения задач
-        └── tools/           # Директория пользовательских инструментов
-            ├── __init__.py  # Инициализация пакета
-            ├── custom_tool.py # Реализация пользовательских инструментов
-            └── test_code.py # Утилиты тестирования
+crewai==0.108.0
+crewai_tools==0.38.1
+langchain_openai==0.3.9
+pydantic==2.10.6
+python-dotenv==1.0.1
 ```
 
-### Ключевые компоненты
+## Project Architecture
 
-1. **Агенты (agents.yaml)**
-   - **Project Information Collector** — собирает метаданные проекта, сканирует директории
-   - **File Content Reader** — читает и анализирует содержимое файлов
-   - **README File Creator** — генерирует итоговый файл README.md
+### Directory Structure
+```
+readmemd/
+├── .gitignore
+├── pyproject.toml
+├── knowledge/
+│   └── user_preference.txt
+└── src/
+    └── readmemd/
+        ├── __init__.py
+        ├── crew.py
+        ├── main.py
+        ├── config/
+        │   ├── agents.yaml
+        │   └── tasks.yaml
+        └── tools/
+            ├── __init__.py
+            ├── custom_tool.py
+            └── test_code.py
+```
 
-2. **Задачи (tasks.yaml)**
-   - **gather_project_info_task** — анализ структуры проекта
-   - **read_file_contents_task** — чтение содержимого файлов
-   - **generate_readme_task** — создание README.md
+### Main Components
 
-3. **Инструменты (tools)**
-   - **RecursiveDirectoryScanner** — рекурсивное сканирование директорий
-   - **FileReadTool** — чтение содержимого файлов
+#### Core Components
+- **Readmemd Class** (`crew.py`) - Core class that sets up and orchestrates the CrewAI agents and tasks
+- **Main Entry Point** (`main.py`) - Provides CLI interface and execution commands
 
-4. **Основные файлы**
-   - **crew.py** — основная логика работы CrewAI
-   - **main.py** — точка входа приложения
+#### Configuration
+- **Agents** (`config/agents.yaml`) - Three specialized agents:
+  - Project Information Collector
+  - File Content Reader
+  - README File Creator
+- **Tasks** (`config/tasks.yaml`) - Sequential tasks:
+  - Gather project information
+  - Read file contents
+  - Generate README
 
-## Установка и запуск
+#### Tools
+- **Custom Tools** (`tools/custom_tool.py`) - Includes `RecursiveDirectoryScanner` for analyzing project structures
+- **Testing Utilities** (`tools/test_code.py`) - For testing the system
 
-### Предварительные требования
-- Python 3.10-3.12
-- Ключ API OpenRouter
+### Workflow
+The system works sequentially:
+1. First scanning the project structure
+2. Then reading relevant file contents
+3. Finally generating a comprehensive README.md based on the collected information
 
-### Шаги установки
-1. Клонируйте репозиторий:
+## Installation and Running
+
+### Prerequisites
+- Python 3.10 or higher
+- Access to OpenRouter or OpenAI API
+
+### Installation Steps
+
+1. Clone the repository
    ```bash
-   git clone <url-репозитория>
-   cd Сreating_readmeMD
+   git clone <repository-url>
+   cd readmemd
    ```
 
-2. Установите зависимости:
+2. Install the dependencies
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Создайте файл `.env` с вашими API-ключами:
+3. Set up environment variables in a `.env` file
    ```
-   OPENROUTER_API_KEY='ваш-api-ключ'
+   OPENROUTER_API_KEY=your_openrouter_api_key
+   # OPENAI_API_KEY=your_openai_api_key  # Alternative
    ```
+
+### Required Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| OPENROUTER_API_KEY | API key for OpenRouter, used to access AI models | Yes |
+| OPENAI_API_KEY | Alternative API key for OpenAI | No |
+
+### Running the Application
+
+#### Basic Usage
+```bash
+readmemd
+```
+or
+```bash
+run_crew
+```
+
+#### Advanced Options
+```bash
+# Train the crew for a specific number of iterations
+train <iterations> <filename>
+
+# Replay the crew execution from a specific task
+replay <task_id>
+
+# Test the crew execution and return results
+test <iterations> <openai_model_name>
+```
+
+## How It Works
+
+ReadmeMD uses a multi-agent approach powered by the CrewAI framework to generate comprehensive documentation:
+
+1. **Project Information Collector Agent** scans the project structure using the `RecursiveDirectoryScanner` tool, identifying key files and directories.
+
+2. **File Content Reader Agent** analyzes the content of important files to extract:
+   - Project purpose and description
+   - Dependencies and requirements
+   - Installation instructions
+   - Usage examples
+   - Configuration options
+
+3. **README File Creator Agent** takes all the gathered information and generates a well-structured README.md file with:
+   - Clear project description
+   - Feature highlights
+   - Installation steps
+   - Usage instructions
+   - Architecture overview
+   - License information
+
+The process is configured through YAML files that define the agents' roles, capabilities, and the sequence of tasks they perform.
+
+Example of agent configuration:
+```yaml
+# Simplified example from agents.yaml
+agents:
+  - name: Project Information Collector
+    role: Project Structure Analyzer
+    goal: Gather comprehensive information about the project structure
+    backstory: You are an expert in analyzing software projects...
+```
+
+## Additional Information
+
+This project was created by Karpenko Sergey, a Data Scientist/AI Engineer based in Moscow, Russia, with interests in AI Agents and NLP.
+
+GitHub: [https://github.com/SergeyKarpenko1](https://github.com/SergeyKarpenko1)
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+<a name="russian"></a>
+
+# ReadmeMD 🚀
+
+![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
+![CrewAI](https://img.shields.io/badge/CrewAI-0.108.0-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+Автоматический генератор README.md файлов с использованием AI-агентов на основе фреймворка CrewAI.
+
+## Содержание
+
+- [Введение](#введение)
+- [Возможности](#возможности)
+- [Технологии и библиотеки](#технологии-и-библиотеки)
+- [Архитектура проекта](#архитектура-проекта)
+- [Установка и запуск](#установка-и-запуск)
+- [Как это работает](#как-это-работает)
+- [Дополнительная информация](#дополнительная-информация)
+- [Лицензия](#лицензия)
+
+## Введение
+
+ReadmeMD — это приложение на Python, использующее фреймворк CrewAI для автоматического создания подробных README.md файлов для проектов. Оно анализирует структуру проекта, исходный код и конфигурационные файлы для создания хорошо структурированной документации.
+
+Этот инструмент автоматизирует утомительную и часто упускаемую из виду задачу создания детальной документации для программных проектов, обеспечивая последовательные и полные README файлы, соответствующие лучшим практикам.
+
+## Возможности
+
+- 📁 **Рекурсивное сканирование структуры проекта** - Автоматически анализирует весь каталог проекта
+- 📝 **Интеллектуальный анализ содержимого файлов** - Извлекает релевантную информацию из исходного кода и конфигурационных файлов
+- 🤖 **Мультиагентная AI-система** - Использует специализированных агентов через фреймворк CrewAI для различных задач документирования
+- 📊 **Комплексная генерация README** - Создает стандартизированную документацию со всеми необходимыми разделами
+- 🌐 **Многоязычная поддержка** - Генерирует документацию на английском и русском языках
+- ⚙️ **Настраиваемость через YAML-файлы** - Легко настраивайте агентов и задачи под свои нужды
+
+## Технологии и библиотеки
+
+### Основной фреймворк и архитектура
+- **Python** (>=3.10,<3.13)
+- **CrewAI** - Фреймворк для оркестрации AI-агентов
+- **LangChain** - Для интеграции с AI-моделями
+
+### AI-модели
+- Anthropic Claude 3.7 Sonnet (через OpenRouter)
+- Google Gemini Flash 1.5 (для тестирования)
+
+### Зависимости
+```
+crewai==0.108.0
+crewai_tools==0.38.1
+langchain_openai==0.3.9
+pydantic==2.10.6
+python-dotenv==1.0.1
+```
+
+## Архитектура проекта
+
+### Структура директорий
+```
+readmemd/
+├── .gitignore
+├── pyproject.toml
+├── knowledge/
+│   └── user_preference.txt
+└── src/
+    └── readmemd/
+        ├── __init__.py
+        ├── crew.py
+        ├── main.py
+        ├── config/
+        │   ├── agents.yaml
+        │   └── tasks.yaml
+        └── tools/
+            ├── __init__.py
+            ├── custom_tool.py
+            └── test_code.py
+```
+
+### Основные компоненты
+
+#### Базовые компоненты
+- **Класс Readmemd** (`crew.py`) - Основной класс, который настраивает и оркеструет агентов CrewAI и задачи
+- **Точка входа** (`main.py`) - Предоставляет CLI-интерфейс и команды выполнения
+
+#### Конфигурация
+- **Агенты** (`config/agents.yaml`) - Три специализированных агента:
+  - Сборщик информации о проекте
+  - Читатель содержимого файлов
+  - Создатель README-файла
+- **Задачи** (`config/tasks.yaml`) - Последовательные задачи:
+  - Сбор информации о проекте
+  - Чтение содержимого файлов
+  - Генерация README
+
+#### Инструменты
+- **Пользовательские инструменты** (`tools/custom_tool.py`) - Включает `RecursiveDirectoryScanner` для анализа структуры проекта
+- **Утилиты тестирования** (`tools/test_code.py`) - Для тестирования системы
+
+### Рабочий процесс
+Система работает последовательно:
+1. Сначала сканирует структуру проекта
+2. Затем читает содержимое релевантных файлов
+3. Наконец, генерирует подробный README.md на основе собранной информации
+
+## Установка и запуск
+
+### Предварительные требования
+- Python 3.10 или выше
+- Доступ к API OpenRouter или OpenAI
+
+### Шаги установки
+
+1. Клонируйте репозиторий
+   ```bash
+   git clone <url-репозитория>
+   cd readmemd
+   ```
+
+2. Установите зависимости
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Настройте переменные окружения в файле `.env`
+   ```
+   OPENROUTER_API_KEY=ваш_ключ_api_openrouter
+   # OPENAI_API_KEY=ваш_ключ_api_openai  # Альтернатива
+   ```
+
+### Необходимые переменные окружения
+
+| Переменная | Описание | Обязательно |
+|------------|----------|-------------|
+| OPENROUTER_API_KEY | API-ключ для OpenRouter, используемый для доступа к AI-моделям | Да |
+| OPENAI_API_KEY | Альтернативный API-ключ для OpenAI | Нет |
 
 ### Запуск приложения
-Основная точка входа — файл `main.py`, который предоставляет несколько команд:
 
+#### Базовое использование
 ```bash
-# Запуск генерации README по умолчанию
-python -m readmemd.main
-
-# Обучение экипажа для определенного числа итераций
-python -m readmemd.main train [iterations] [filename]
-
-# Повторное выполнение конкретной задачи
-python -m readmemd.main replay [task_id]
-
-# Тестирование экипажа с определенными параметрами
-python -m readmemd.main test [iterations] [model_name]
+readmemd
+```
+или
+```bash
+run_crew
 ```
 
-Вы также можете запустить приложение, импортируя и используя класс Readmemd:
+#### Расширенные опции
+```bash
+# Обучение команды для определенного числа итераций
+train <количество_итераций> <имя_файла>
 
-```python
-from readmemd.crew import Readmemd
+# Повторное выполнение команды с определенной задачи
+replay <id_задачи>
 
-project_dir = "/путь/к/вашему/проекту"
-readme_crew = Readmemd(project_directory=project_dir)
-readme_crew.run()
+# Тестирование выполнения команды и возврат результатов
+test <количество_итераций> <имя_модели_openai>
 ```
-
-### Переменные окружения
-Обязательные переменные окружения:
-- `OPENROUTER_API_KEY`: API-ключ для доступа к моделям AI через OpenRouter
 
 ## Как это работает
 
-Процесс генерации README.md происходит в три основных этапа:
+ReadmeMD использует мультиагентный подход на основе фреймворка CrewAI для генерации комплексной документации:
 
-1. **Сбор информации о проекте**
-   - Агент Project Information Collector использует инструмент RecursiveDirectoryScanner для анализа структуры проекта
-   - Сканер исключает системные директории (.venv, __pycache__ и т.д.)
-   - Результаты сохраняются в файл project_info.json с путями к файлам, размерами и временем модификации
+1. **Агент-сборщик информации о проекте** сканирует структуру проекта с помощью инструмента `RecursiveDirectoryScanner`, идентифицируя ключевые файлы и директории.
 
-2. **Анализ содержимого файлов**
-   - Агент File Content Reader использует FileReadTool для чтения содержимого файлов, идентифицированных на предыдущем этапе
-   - Извлекается информация об установке, использовании, API и т.д.
-   - Результаты структурируются и сохраняются в readme_data.json
+2. **Агент-читатель содержимого файлов** анализирует содержимое важных файлов для извлечения:
+   - Назначения и описания проекта
+   - Зависимостей и требований
+   - Инструкций по установке
+   - Примеров использования
+   - Параметров конфигурации
 
-3. **Генерация README**
-   - Агент README File Creator использует данные из readme_data.json для создания README.md
-   - Следует структурированному формату со стандартными разделами
-   - Генерирует итоговый файл README.md
+3. **Агент-создатель README-файла** берет всю собранную информацию и генерирует хорошо структурированный файл README.md с:
+   - Четким описанием проекта
+   - Выделением основных возможностей
+   - Шагами установки
+   - Инструкциями по использованию
+   - Обзором архитектуры
+   - Информацией о лицензии
 
-Пример потока данных:
+Процесс настраивается через YAML-файлы, которые определяют роли агентов, их возможности и последовательность выполняемых ими задач.
 
+Пример конфигурации агента:
+```yaml
+# Упрощенный пример из agents.yaml
+agents:
+  - name: Project Information Collector
+    role: Project Structure Analyzer
+    goal: Gather comprehensive information about the project structure
+    backstory: You are an expert in analyzing software projects...
 ```
-Исходный проект -> RecursiveDirectoryScanner -> project_info.json -> 
-FileReadTool -> readme_data.json -> README Generator -> README.md
-```
-
-Агенты используют модели AI (Claude-3.7-Sonnet и Gemini Flash 1.5) через OpenRouter API для анализа и генерации содержимого.
 
 ## Дополнительная информация
 
-### Настройка и кастомизация
-Проект можно настроить через:
-- Конфигурационные файлы в директории `config/`
-- Пользовательские предпочтения в `knowledge/user_preference.txt`
-- Переменные окружения в файле `.env`
+Этот проект создан Карпенко Сергеем, специалистом по Data Science и инженером по искусственному интеллекту из Москвы, Россия, с интересами в области AI-агентов и NLP.
 
-### Пользовательские предпочтения
-Система может использовать информацию о пользователе, хранящуюся в `user_preference.txt`:
-- Имя пользователя: Карпенко Сергей
-- Профессия: Специалист по данным/AI инженер
-- Интересы: AI Агенты/NLP
-- Местоположение: Москва, Россия
-- GitHub: https://github.com/SergeyKarpenko1
-
-### Конфигурация проекта
-Проект использует стандартную конфигурацию Python-проекта:
-- Имя пакета: readmemd
-- Версия: 0.1.0
-- Описание: "readmeMD using crewAI"
-- LLM по умолчанию: gpt-4-turbo
+GitHub: [https://github.com/SergeyKarpenko1](https://github.com/SergeyKarpenko1)
 
 ## Лицензия
 
-Проект распространяется под лицензией MIT.
-
-```
-MIT License
-
-Copyright (c) 2023 Карпенко Сергей
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+Этот проект лицензирован по лицензии MIT - см. файл LICENSE для подробностей.
