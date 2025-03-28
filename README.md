@@ -1,3 +1,6 @@
+![resized_pixel_art_3120x800_recreation](https://github.com/user-attachments/assets/c3b3c64b-1fb8-4d98-b956-f456a312d631)
+
+
 # ReadmeMD 🚀
 
 ![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
@@ -115,7 +118,7 @@ The system works sequentially:
 
 1. Clone the repository
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/SergeyKarpenko1/CrewAI_creating_readmemd)
    cd readmemd
    ```
 
@@ -320,7 +323,7 @@ readmemd/
 
 1. Клонируйте репозиторий
    ```bash
-   git clone <url-репозитория>
+   git clone [<url-репозитория>](https://github.com/SergeyKarpenko1/CrewAI_creating_readmemd)
    cd readmemd
    ```
 
